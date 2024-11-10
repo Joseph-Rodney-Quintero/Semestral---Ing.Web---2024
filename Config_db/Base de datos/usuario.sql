@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-11-2024 a las 04:10:06
+-- Tiempo de generación: 10-11-2024 a las 03:41:18
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -29,8 +29,16 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `usuario` (
   `id_user` int(3) NOT NULL,
-  `name_user` varchar(50) CHARACTER SET utf32 COLLATE utf32_spanish_ci NOT NULL
+  `name_user` varchar(50) CHARACTER SET utf32 COLLATE utf32_spanish_ci NOT NULL,
+  `pass_user` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`id_user`, `name_user`, `pass_user`) VALUES
+(7, 'Tony', '$2y$10$P/wA1s4doVK0cME3y/011eVvPviVlvhrfLAbD05.iDeBpOr9n0zYy');
 
 --
 -- Índices para tablas volcadas
@@ -50,7 +58,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id_user` int(3) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_user` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -1,5 +1,4 @@
 <?php
-
 class connection_db{
     private $db_name = "ing. web - semestral2024"; // nombre de la base de datos
     private $db_host = "localhost"; // nombre del servidor
@@ -17,18 +16,14 @@ class connection_db{
             echo "Información del host: " . $hostInfo . "<br>";
             $serverVersion = $this->conn->getAttribute(PDO::ATTR_SERVER_VERSION);
             echo "Versión del servidor MySQL: " . $serverVersion . "<br>";
+            return $this->conn;
         }catch(PDOException $e){
             echo "Error de conexión: " . $e->getMessage();
         }
-        return $this->conn;
-
     }
-
+ 
 }
 
-//$database = new connection_db();
-//$db = $database->conectar();
-
-//$conexion = conectar_db();
-
-
+/*public function Cerrar() {
+        $this->conn->
+    }*/
