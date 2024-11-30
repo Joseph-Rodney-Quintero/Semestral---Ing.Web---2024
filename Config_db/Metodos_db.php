@@ -9,17 +9,20 @@ class Metodos_users{
     }
     
     //Metodo para Insertar usuarios
-    public function Insert_user($name,$pass){
+    public function Insert_user($name,$pass,$name_last,$ced,$email){
         if($this->Verificar_user($name)){
             echo '<br>'.'Usuario ya existe';
             return false;
         }
         try{
             
-            $query = "INSERT INTO " . $this->table_name . "(name_user, pass_user) VALUES (:name, :pass)";
+            $query = "INSERT INTO " . $this->table_name . "(name_user, pass_user, name_last, ced_user, email_user) VALUES (:name, :pass, :name_last, :ced, :email)";
             $stmt = $this->db_conn->prepare($query);
             $stmt->bindParam(":name", $name);
             $stmt->bindParam(":pass", $pass);
+            $stmt->bindParam(":name_last", $name_last);
+            $stmt->bindParam(":ced", $ced);
+            $stmt->bindParam(":email", $email);
            // echo 'Usuario correctamente creado';
             return $stmt->execute();
         }catch(PDOException $e){
@@ -49,7 +52,7 @@ class Metodos_users{
     //Metodo para Verificar usuario existente
     public function Verificar_user($name){
         try{
-            $query = "SELECT COUNT(*) FROM usuario WHERE name_user = :name";
+            $query = "SELECT COUNT(*) FROM " . $this->table_name . " WHERE name_user = :name";
             $stmt = $this->db_conn->prepare($query);
             $stmt->bindParam(":name", $name);
             $stmt->execute();
@@ -63,19 +66,38 @@ class Metodos_users{
         }
     }
 
+    public function Buscar_user($user){
+        try{
+            $query = "SELECT * FROM " . $this->table_name . " WHERE name_user = :user";
+            $stmt = $this->db_conn->prepare($query);
+            $stmt->bindParam(":user", $user);
+            $stmt->execute();
+            $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $resultado;   
+        }catch(PDOException $e){
+            echo "Error de sentencia: " . $e->getMessage()."<br>";
+            echo "Código de error SQLSTATE: " . $e->getCode()."<br>";
+            echo "Detalles adicionales:"."<br>";
+            print_r($e->errorInfo);
+        }
+
+    }
+
     public function Login($user, $pass){
         if($this->Verificar_user($user)){
             try{
-                $query = "SELECT pass_user FROM usuario WHERE name_user = :user";
+                $query = "SELECT pass_user FROM " . $this->table_name . " WHERE name_user = :user";
                 $stmt = $this->db_conn->prepare($query);
                 $stmt->bindParam(":user", $user);
                 $stmt->execute();
                 $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
                 $hash = $resultado['pass_user'];
                 if(password_verify($pass, $hash)){
-                    echo '<br>'."Bienvenido";
+                    return true;
+                    //echo '<br>'."Bienvenido";
                 }else{
-                    echo '<br>'."Password incorrect";
+                    return false;
+                    //echo '<br>'."Password incorrect";
                 }
 
             }catch(PDOException $e){
@@ -85,8 +107,18 @@ class Metodos_users{
                 print_r($e->errorInfo);
             }
         }else{
-            echo '<br>'.'Usuario no encontrado';
+            return false;
+            //echo '<br>'.'Usuario no encontrado';
         }
+    }
+
+    public function Update_User($id, $nombre, $email) {
+        $query = "UPDATE " . $this->table_name . " SET name_last = :nombre, email_user = :email,  WHERE id = :id";
+        $stmt = $this->db_conn->prepare($query);
+        $stmt->bindParam(":id", $id);
+        $stmt->bindParam(":nombre", $nombre);
+        $stmt->bindParam(":email", $email);
+        return $stmt->execute();
     }
 
 }
