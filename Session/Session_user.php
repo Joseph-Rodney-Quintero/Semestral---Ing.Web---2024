@@ -18,7 +18,7 @@ class User_session{
         $db = $database->conectar();
         $metodos = new Metodos_users($db);
         $usuario = $metodos->Buscar_user($user);
-        return $usuario;
+        return $usuario['name_last'];
 
     }
     public function cerrar_sesion(){

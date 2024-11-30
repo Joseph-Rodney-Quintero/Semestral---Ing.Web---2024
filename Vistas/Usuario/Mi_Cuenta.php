@@ -1,5 +1,5 @@
 <?php
-require '../Session/Session_user.php';
+require '../../Session/Session_user.php';
 $user_sesion = New User_session();
 if(!isset($_SESSION['user'])){
     echo"<script> alert('Debes iniciar sesión');document.location.href = '../Login/Login_Frontend.php';</script>";
@@ -15,8 +15,9 @@ if(!isset($_SESSION['user'])){
 </head>
 <body>
     <h3>Info de usuario</h3>
-    <a href="Editar user.php" target="_blank">Editar usuario</a><br>
-    <a href="Mis_Eventos.php" target="_blank">Mis eventos creados</a>
+    <a href="Editar_user.php" target="_blank">Editar usuario</a><br>
+    <a href="Mis_Eventos.php" target="_blank">Mis eventos creados</a><br>
+    <a href="../Home.php" target="_blank">Home</a>
     
 
     

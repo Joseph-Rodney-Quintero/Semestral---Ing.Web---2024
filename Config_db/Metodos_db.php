@@ -112,14 +112,30 @@ class Metodos_users{
         }
     }
 
-    public function Update_User($id, $nombre, $email) {
-        $query = "UPDATE " . $this->table_name . " SET name_last = :nombre, email_user = :email,  WHERE id = :id";
+    public function Update_User($id, $column, $dato) {
+        try{
+            //$query = "UPDATE " . $this->table_name . " SET name_last = :nombre, email_user = :email,  WHERE id = :id";
+            $query = "UPDATE " . $this->table_name . " SET " .$column. " = :dato WHERE id_user = :id";
+            $stmt = $this->db_conn->prepare($query);
+            $stmt->bindParam(":id", $id);
+            $stmt->bindParam(":dato", $dato);
+            return $stmt->execute();
+        }catch(PDOException $e){
+            echo "Error de sentencia: " . $e->getMessage()."<br>";
+            echo "Código de error SQLSTATE: " . $e->getCode()."<br>";
+            echo "Detalles adicionales:"."<br>";
+            print_r($e->errorInfo);
+        }
+    }
+
+    /*public function Update_User2($id, $nombre, $email) {
+        //$query = "UPDATE " . $this->table_name . " SET name_last = :nombre, email_user = :email,  WHERE id = :id";
+        $query = "UPDATE " . $this->table_name . " SET " .name_last. = :nombre " WHERE id = :id";
         $stmt = $this->db_conn->prepare($query);
         $stmt->bindParam(":id", $id);
         $stmt->bindParam(":nombre", $nombre);
         $stmt->bindParam(":email", $email);
-        return $stmt->execute();
-    }
+        return $stmt->execute();*/
 
 }
 

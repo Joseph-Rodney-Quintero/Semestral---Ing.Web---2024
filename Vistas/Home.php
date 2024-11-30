@@ -19,8 +19,8 @@ if(isset($_SESSION['user'])){
     <title>Home Usuario</title>
 </head>
 <body>
-    <h3>Bienvenido <?php echo $user['name_last'];  ?></h3>
-    <a href="./Usuario/Mi_Cuenta.php">Mi Cuenta</a><br>
+    <h3>Bienvenido <?php echo $user;  ?></h3>
+    <a href="Usuario/Mi_Cuenta.php">Mi Cuenta</a><br>
     <a href="Crear_Evento.php">Crear Evento</a><br>
     <a href="Cerrar_session.php">Cerrar Sesion</a><br>
 
