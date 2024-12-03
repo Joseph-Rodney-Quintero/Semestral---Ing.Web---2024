@@ -1,6 +1,6 @@
 <?php
 class connection_db{
-    private $db_name = "ing. web - semestral2024"; // nombre de la base de datos
+    private $db_name = "semestral2024"; // nombre de la base de datos
     private $db_host = "localhost"; // nombre del servidor
     private $db_pass = ""; // contraseña
     private $db_user = "root"; // usuario

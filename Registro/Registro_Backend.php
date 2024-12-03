@@ -39,7 +39,7 @@ if(isset($_POST['NameR']) && !empty($_POST['NameR']) && isset($_POST['passR']) &
             echo "<a href='Registro_FE.html'>Regresar</a>";
 
         }
-    }catch (PDOException $e){
+    }catch(PDOException $e){
         echo "Error de sentencia: " . $e->getMessage()."<br>";
         echo "Código de error SQLSTATE: " . $e->getCode()."<br>";
         echo "Detalles adicionales:"."<br>";

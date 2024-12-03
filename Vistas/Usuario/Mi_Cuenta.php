@@ -16,7 +16,7 @@ if(!isset($_SESSION['user'])){
 <body>
     <h3>Info de usuario</h3>
     <a href="Editar_user.php" target="_blank">Editar usuario</a><br>
-    <a href="Mis_Eventos.php" target="_blank">Mis eventos creados</a><br>
+    <a href="Mis_Tickets.php" target="_blank">Mis Bolestos</a><br>
     <a href="../Home.php" target="_blank">Home</a>
     
 

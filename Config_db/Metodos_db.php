@@ -2,6 +2,7 @@
 class Metodos_users{
     private $db_conn;
     private $table_name = "usuario";
+    private $rol = 1;
 
     // Constructor que recibe la conexión
     public function __construct($db){
@@ -15,21 +16,23 @@ class Metodos_users{
             return false;
         }
         try{
-            
-            $query = "INSERT INTO " . $this->table_name . "(name_user, pass_user, name_last, ced_user, email_user) VALUES (:name, :pass, :name_last, :ced, :email)";
+            $query = "INSERT INTO " . $this->table_name . "(name_user, pass_user, id_rol, name_last, ced_user, email_user) VALUES (:name, :pass, :rol, :name_last, :ced, :email)";
             $stmt = $this->db_conn->prepare($query);
             $stmt->bindParam(":name", $name);
             $stmt->bindParam(":pass", $pass);
+            $stmt->bindParam(":rol", $this->rol);
             $stmt->bindParam(":name_last", $name_last);
             $stmt->bindParam(":ced", $ced);
             $stmt->bindParam(":email", $email);
+            $result = $stmt->execute();
            // echo 'Usuario correctamente creado';
-            return $stmt->execute();
+            return $result;
         }catch(PDOException $e){
             echo "Error de sentencia: " . $e->getMessage()."<br>";
             echo "Código de error SQLSTATE: " . $e->getCode()."<br>";
             echo "Detalles adicionales:"."<br>";
             print_r($e->errorInfo);
+            return false;
         }  
     }
 
