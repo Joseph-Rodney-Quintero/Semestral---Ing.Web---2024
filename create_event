@@ -1,0 +1,113 @@
+<?php
+// Procesar el formulario cuando se envíe
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Conexión a la base de datos
+    $servidor = "localhost";
+    $usuario = "root";
+    $contraseña = "";
+    $base_de_datos = "gestor_eventos";
+
+    $conexion = new mysqli($servidor, $usuario, $contraseña, $base_de_datos);
+
+    if ($conexion->connect_error) {
+        die("Error en la conexión: " . $conexion->connect_error);
+    }
+
+    // Recoger datos del formulario
+    $titulo_evento = $_POST["titulo_evento"];
+    $url_amigable = $_POST["url_amigable"];
+    $ubicacion = $_POST["ubicacion"];
+    $fecha_inicio = $_POST["fecha_inicio"];
+    $fecha_fin = $_POST["fecha_fin"];
+    $descripcion_evento = $_POST["descripcion_evento"];
+    $nombre_organizador = $_POST["nombre_organizador"];
+    $descripcion_organizador = $_POST["descripcion_organizador"];
+    $tipo_boleto = $_POST["tipo_boleto"];
+    $privacidad = $_POST["privacidad"];
+
+    // Subir logo del evento
+    $logo_evento = $_FILES["logo_evento"]["name"];
+    $directorio_destino = "uploads/";
+    $archivo_destino = $directorio_destino . basename($logo_evento);
+    move_uploaded_file($_FILES["logo_evento"]["tmp_name"], $archivo_destino);
+
+    // Insertar en la base de datos
+    $sql = "INSERT INTO eventos (titulo_evento, url_amigable, ubicacion, fecha_inicio, fecha_fin, logo_evento, descripcion_evento, nombre_organizador, descripcion_organizador, tipo_boleto, privacidad)
+            VALUES ('$titulo_evento', '$url_amigable', '$ubicacion', '$fecha_inicio', '$fecha_fin', '$archivo_destino', '$descripcion_evento', '$nombre_organizador', '$descripcion_organizador', '$tipo_boleto', '$privacidad')";
+
+    if ($conexion->query($sql) === TRUE) {
+        $mensaje = "¡Evento creado con éxito!";
+    } else {
+        $mensaje = "Error: " . $sql . "<br>" . $conexion->error;
+    }
+
+    $conexion->close();
+}
+?>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Evento</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Crear un Evento</h1>
+        <?php if (isset($mensaje)): ?>
+            <p style="color: green;"><?php echo $mensaje; ?></p>
+        <?php endif; ?>
+        <form action="" method="post" enctype="multipart/form-data">
+            <!-- Detalles del Evento -->
+            <h2>Detalles del Evento</h2>
+            <label for="titulo_evento">Título del Evento:</label>
+            <input type="text" id="titulo_evento" name="titulo_evento" required>
+
+            <label for="url_amigable">URL Amigable:</label>
+            <input type="text" id="url_amigable" name="url_amigable" placeholder="https://www.miseventos.com/detalle-evento/" required>
+
+            <label for="ubicacion">Ubicación:</label>
+            <input type="text" id="ubicacion" name="ubicacion">
+
+            <label for="fecha_inicio">Fecha y Hora de Inicio:</label>
+            <input type="datetime-local" id="fecha_inicio" name="fecha_inicio" required>
+
+            <label for="fecha_fin">Fecha y Hora de Finalización:</label>
+            <input type="datetime-local" id="fecha_fin" name="fecha_fin" required>
+
+            <label for="logo_evento">Logo del Evento:</label>
+            <input type="file" id="logo_evento" name="logo_evento">
+
+            <label for="descripcion_evento">Descripción del Evento:</label>
+            <textarea id="descripcion_evento" name="descripcion_evento"></textarea>
+
+            <label for="nombre_organizador">Nombre del Organizador:</label>
+            <input type="text" id="nombre_organizador" name="nombre_organizador" required>
+
+            <label for="descripcion_organizador">Descripción del Organizador:</label>
+            <textarea id="descripcion_organizador" name="descripcion_organizador"></textarea>
+
+            <!-- Configuración de Boletos -->
+            <h2>Configuración de Boletos</h2>
+            <label for="tipo_boleto">Tipo de Boleto:</label>
+            <select id="tipo_boleto" name="tipo_boleto" required>
+                <option value="gratis">Gratis</option>
+                <option value="pago">Pagado</option>
+                <option value="donacion">Donación</option>
+            </select>
+
+            <!-- Configuración Adicional -->
+            <h2>Configuración Adicional</h2>
+            <label for="privacidad">Privacidad:</label>
+            <select id="privacidad" name="privacidad" required>
+                <option value="publico">Público</option>
+                <option value="privado">Privado</option>
+            </select>
+
+            <button type="submit">Guardar</button>
+        </form>
+    </div>
+</body>
+</html>
